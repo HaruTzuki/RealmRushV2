@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetLocator : MonoBehaviour
@@ -22,11 +19,11 @@ public class TargetLocator : MonoBehaviour
         Transform closestTarget = null;
         float maxDistance = Mathf.Infinity;
 
-        foreach(var enemy in enemies)
+        foreach (var enemy in enemies)
         {
             float targetDistance = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if(targetDistance < maxDistance )
+            if (targetDistance < maxDistance)
             {
                 closestTarget = enemy.transform;
                 maxDistance = targetDistance;
@@ -40,8 +37,8 @@ public class TargetLocator : MonoBehaviour
     {
         float targetDistance = Vector3.Distance(transform.position, target.position);
         weapon.LookAt(target);
-        
-        if( targetDistance < range )
+
+        if (targetDistance < range)
         {
             Attack(true);
         }
@@ -49,7 +46,7 @@ public class TargetLocator : MonoBehaviour
         {
             Attack(false);
         }
-        
+
     }
 
     private void Attack(bool isActive)

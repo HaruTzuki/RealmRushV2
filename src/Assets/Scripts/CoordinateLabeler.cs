@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Build;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -28,7 +24,7 @@ public class CoordinateLabeler : MonoBehaviour
 
     private void Update()
     {
-        if(!Application.isPlaying)
+        if (!Application.isPlaying)
         {
             DisplayCoordinates();
             UpdateObjectName();
@@ -76,7 +72,7 @@ public class CoordinateLabeler : MonoBehaviour
 
     private void DisplayCoordinates()
     {
-        if(gridManager == null) return;
+        if (gridManager == null) return;
 
         coordinates.x = Mathf.RoundToInt(transform.parent.position.x / gridManager.UnityGridSize);
         coordinates.y = Mathf.RoundToInt(transform.parent.position.z / gridManager.UnityGridSize);

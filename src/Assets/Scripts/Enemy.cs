@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -23,7 +21,7 @@ public class Enemy : MonoBehaviour
 
     public void PenaltyGold()
     {
-        if(bank == null) return;
+        if (bank == null) return;
 
         bank.Withdraw(goldPenalty);
     }

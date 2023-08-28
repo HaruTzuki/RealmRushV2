@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.AI;
 
 public class GridManager : MonoBehaviour
 {
@@ -24,7 +21,7 @@ public class GridManager : MonoBehaviour
 
     public void BlockNode(Vector2Int coordinates)
     {
-        if(grid.ContainsKey(coordinates))
+        if (grid.ContainsKey(coordinates))
         {
             grid[coordinates].IsWalkable = false;
         }
@@ -32,7 +29,7 @@ public class GridManager : MonoBehaviour
 
     public void ResetNodes()
     {
-        foreach(var entry in grid)
+        foreach (var entry in grid)
         {
             entry.Value.ConnectedTo = null;
             entry.Value.IsExplored = false;
@@ -60,9 +57,9 @@ public class GridManager : MonoBehaviour
 
     private void CreatedGrid()
     {
-        for(var x = 0; x < gridSize.x; x++)
+        for (var x = 0; x < gridSize.x; x++)
         {
-            for(var y = 0; y < gridSize.y; y++)
+            for (var y = 0; y < gridSize.y; y++)
             {
                 var coordinates = new Vector2Int(x, y);
                 grid.Add(coordinates, new Node(coordinates, true));

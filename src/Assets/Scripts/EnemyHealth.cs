@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Enemy))]
@@ -30,7 +27,7 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHitPoints--;
 
-        if(currentHitPoints <= 0)
+        if (currentHitPoints <= 0)
         {
             gameObject.SetActive(false);
             HitPoints += difficultyRamp;

@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
@@ -27,7 +25,7 @@ public class ObjectPool : MonoBehaviour
     {
         pool = new GameObject[poolSize];
 
-        for(var i = 0; i < pool.Length; i++)
+        for (var i = 0; i < pool.Length; i++)
         {
             pool[i] = Instantiate(EnemyPrefab, transform);
             pool[i].SetActive(false);
@@ -45,7 +43,7 @@ public class ObjectPool : MonoBehaviour
 
     private void EnableObjectInPool()
     {
-        for(var i = 0; i < pool.Length;i++)
+        for (var i = 0; i < pool.Length; i++)
         {
             if (!pool[i].activeSelf)
             {

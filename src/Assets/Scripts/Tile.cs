@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -21,7 +19,7 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
-        if(gridManager != null)
+        if (gridManager != null)
         {
             coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
 
@@ -36,9 +34,12 @@ public class Tile : MonoBehaviour
     {
         if (gridManager.GetNode(coordinates).IsWalkable && !pathfinder.WillBlockPath(coordinates))
         {
-            bool isPlaced = towerPrefab.CreateTower(towerPrefab, transform.position);
-            isPlaceable = !isPlaced;
-            gridManager.BlockNode(coordinates);
+            bool isSuccussful = towerPrefab.CreateTower(towerPrefab, transform.position);
+            if (isSuccussful)
+            {
+                gridManager.BlockNode(coordinates);
+                pathfinder.NotifyReceivers();
+            }
         }
     }
 }

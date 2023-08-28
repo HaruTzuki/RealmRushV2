@@ -1,13 +1,12 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class Pathfinder : MonoBehaviour
 {
     [SerializeField] private Vector2Int startCoordinates;
+    public Vector2Int StartCoordinates => startCoordinates;
     [SerializeField] private Vector2Int destinationCoordinates;
+    public Vector2Int DestinationCoordinates => destinationCoordinates;
 
     private Node startNode;
     private Node destinationNode;
@@ -24,25 +23,30 @@ public class Pathfinder : MonoBehaviour
     private void Awake()
     {
         gridManager = FindObjectOfType<GridManager>();
+
         if (gridManager != null)
         {
             grid = gridManager.Grid;
+            startNode = grid[startCoordinates];
+            destinationNode = grid[destinationCoordinates];
         }
     }
 
     private void Start()
     {
-        startNode = gridManager.Grid[startCoordinates];
-        destinationNode = gridManager.Grid[destinationCoordinates];
-
         GetNewPath();
+    }
+
+    public List<Node> GetNewPath(Vector2Int coordinates)
+    {
+        gridManager.ResetNodes();
+        BreadthFirstSearch(coordinates);
+        return BuildPath();
     }
 
     public List<Node> GetNewPath()
     {
-        gridManager.ResetNodes();
-        BreadthFirstSearch();
-        return BuildPath();
+        return GetNewPath(startCoordinates);
     }
 
     private void ExploreNeighbors()
@@ -59,9 +63,9 @@ public class Pathfinder : MonoBehaviour
             }
         }
 
-        foreach(var neighbor in neighbors)
+        foreach (var neighbor in neighbors)
         {
-            if(!reached.ContainsKey(neighbor.Coordinates) && neighbor.IsWalkable)
+            if (!reached.ContainsKey(neighbor.Coordinates) && neighbor.IsWalkable)
             {
                 neighbor.ConnectedTo = currentSearchNode;
                 reached.Add(neighbor.Coordinates, neighbor);
@@ -70,23 +74,26 @@ public class Pathfinder : MonoBehaviour
         }
     }
 
-    private void BreadthFirstSearch()
+    private void BreadthFirstSearch(Vector2Int coordinates)
     {
+        startNode.IsWalkable = true;
+        destinationNode.IsWalkable = true;
+
         frontier.Clear();
         reached.Clear();
 
         bool isRunning = true;
 
-        frontier.Enqueue(startNode);
-        reached.Add(startCoordinates, startNode);
+        frontier.Enqueue(grid[coordinates]);
+        reached.Add(coordinates, grid[coordinates]);
 
-        while(frontier.Count > 0 && isRunning)
+        while (frontier.Count > 0 && isRunning)
         {
             currentSearchNode = frontier.Dequeue();
             currentSearchNode.IsExplored = true;
             ExploreNeighbors();
 
-            if(currentSearchNode.Coordinates == destinationCoordinates)
+            if (currentSearchNode.Coordinates == destinationCoordinates)
             {
                 isRunning = false;
             }
@@ -101,7 +108,7 @@ public class Pathfinder : MonoBehaviour
         path.Add(currentNode);
         currentNode.IsPath = true;
 
-        while(currentNode.ConnectedTo != null)
+        while (currentNode.ConnectedTo != null)
         {
             currentNode = currentNode.ConnectedTo;
             path.Add(currentNode);
@@ -123,7 +130,7 @@ public class Pathfinder : MonoBehaviour
             var newPath = GetNewPath();
             grid[coordinates].IsWalkable = previousState;
 
-            if(newPath.Count <= 1)
+            if (newPath.Count <= 1)
             {
                 GetNewPath();
                 return true;
@@ -131,5 +138,10 @@ public class Pathfinder : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void NotifyReceivers()
+    {
+        BroadcastMessage("RecalculatePath", false, SendMessageOptions.DontRequireReceiver);
     }
 }
