@@ -112,7 +112,7 @@ public class Pathfinder : MonoBehaviour
         {
             currentNode = currentNode.ConnectedTo;
             path.Add(currentNode);
-            currentNode.IsPath = false;
+            currentNode.IsPath = true;
         }
 
         path.Reverse();
